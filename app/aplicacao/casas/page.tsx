@@ -34,13 +34,13 @@ function Casas() {
                 }
 
                 // Buscar todas as casas
-                const casasResponse = await axios.get("http://localhost:8080/casas", {
+                const casasResponse = await axios.get("https://floating-lowlands-90887-cc961db17145.herokuapp.com/casas", {
                     headers: { Authorization: `${token}` }
                 });
                 setCasas(casasResponse.data);
 
                 // Buscar detalhes do usuário para obter a casa selecionada
-                const userResponse = await axios.get("http://localhost:8080/users/details", {
+                const userResponse = await axios.get("https://floating-lowlands-90887-cc961db17145.herokuapp.com/users/details", {
                     headers: { Authorization: `${token}` }
                 });
 
@@ -69,13 +69,13 @@ function Casas() {
 
             // Atualiza no backend
             await axios.put(
-                "http://localhost:8080/selecionar/casa",
+                "https://floating-lowlands-90887-cc961db17145.herokuapp.com/selecionar/casa",
                 { casaId: id },
                 { headers: { Authorization: `${token}` } }
             );
 
             // Buscar os detalhes atualizados do usuário para refletir no frontend
-            const userResponse = await axios.get("http://localhost:8080/users/details", {
+            const userResponse = await axios.get("https://floating-lowlands-90887-cc961db17145.herokuapp.com/users/details", {
                 headers: { Authorization: `${token}` }
             });
 

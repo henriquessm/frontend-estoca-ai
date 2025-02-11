@@ -33,11 +33,11 @@ export default function Page() {
         return;
       }
       try {
-        const casasResponse = await axios.get("http://localhost:8080/casas", {
+        const casasResponse = await axios.get("https://floating-lowlands-90887-cc961db17145.herokuapp.com/casas", {
           headers: { Authorization: token },
         });
         setCasas(casasResponse.data);
-        const userResponse = await axios.get("http://localhost:8080/users/details", {
+        const userResponse = await axios.get("https://floating-lowlands-90887-cc961db17145.herokuapp.com/users/details", {
           headers: { Authorization: token },
         });
         if (userResponse.data.casaEscolhida) {
@@ -61,13 +61,13 @@ export default function Page() {
   
       try {
         const listaResponse = await axios.get(
-          `http://localhost:8080/casas/${casaId}/lista-de-compras`,
+          `https://floating-lowlands-90887-cc961db17145.herokuapp.com/casas/${casaId}/lista-de-compras`,
           { headers: { Authorization: token } }
         );
         const lista = listaResponse.data;
   
         const produtosResponse = await axios.get(
-          `http://localhost:8080/casas/${casaId}/lista-de-compras/produtos`,
+          `https://floating-lowlands-90887-cc961db17145.herokuapp.com/casas/${casaId}/lista-de-compras/produtos`,
           { headers: { Authorization: token } }
         );
   
@@ -102,7 +102,7 @@ export default function Page() {
     }
     try {
       await axios.put(
-        "http://localhost:8080/selecionar/casa",
+        "https://floating-lowlands-90887-cc961db17145.herokuapp.com/selecionar/casa",
         { casaId: novaCasa },
         { headers: { Authorization: token } }
       );
@@ -128,12 +128,12 @@ export default function Page() {
         produtosSelecionados.map((produto) =>
           Promise.all([
             axios.post(
-              `http://localhost:8080/casas/${casaId}/despensa/produtos/${produto.id}`,
+              `https://floating-lowlands-90887-cc961db17145.herokuapp.com/casas/${casaId}/despensa/produtos/${produto.id}`,
               { quantidade: produto.quantidade },
               { headers: { Authorization: token } }
             ),
             axios.delete(
-              `http://localhost:8080/casas/${casaId}/lista-de-compras/produtos/${produto.id}?quantidade=${produto.quantidade}`,
+              `https://floating-lowlands-90887-cc961db17145.herokuapp.com/casas/${casaId}/lista-de-compras/produtos/${produto.id}?quantidade=${produto.quantidade}`,
               { headers: { Authorization: token } }
             )
           ])
@@ -154,7 +154,7 @@ export default function Page() {
       if (!token || !casaId) return;
       try {
         await axios.put(
-          `http://localhost:8080/casas/${casaId}/lista-de-compras/produtos/${selectedProduto.id}?quantidade=${tempQuantidade}`,
+          `https://floating-lowlands-90887-cc961db17145.herokuapp.com/casas/${casaId}/lista-de-compras/produtos/${selectedProduto.id}?quantidade=${tempQuantidade}`,
           {},
           { headers: { Authorization: token } }
         );
@@ -183,7 +183,7 @@ export default function Page() {
     if (!token) return;
     try {
       await axios.delete(
-        `http://localhost:8080/casas/${casaId}/lista-de-compras/produtos/${selectedProduto.id}?quantidade=${selectedProduto.quantidade}`,
+        `https://floating-lowlands-90887-cc961db17145.herokuapp.com/casas/${casaId}/lista-de-compras/produtos/${selectedProduto.id}?quantidade=${selectedProduto.quantidade}`,
         { headers: { Authorization: token } }
       );
       setProdutos((prev) =>
@@ -221,7 +221,7 @@ export default function Page() {
       await Promise.all(
         produtosToDelete.map(produto =>
           axios.delete(
-            `http://localhost:8080/casas/${casaId}/lista-de-compras/produtos/${produto.id}?quantidade=${produto.quantidade}`,
+            `https://floating-lowlands-90887-cc961db17145.herokuapp.com/casas/${casaId}/lista-de-compras/produtos/${produto.id}?quantidade=${produto.quantidade}`,
             { headers: { Authorization: token } }
           )
         )
