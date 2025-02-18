@@ -26,13 +26,13 @@ export default function SelecaoCasas({ onCasaSelecionada }: { onCasaSelecionada:
         }
 
         // Buscar todas as casas
-        const casasResponse = await axios.get("https://floating-lowlands-90887-cc961db17145.herokuapp.com/casas", {
+        const casasResponse = await axios.get("http://localhost:8080/casas", {
           headers: { Authorization: `${token}` },
         });
         setCasas(casasResponse.data);
 
         // Buscar detalhes do usuário para obter a casa selecionada
-        const userResponse = await axios.get("https://floating-lowlands-90887-cc961db17145.herokuapp.com/users/details", {
+        const userResponse = await axios.get("http://localhost:8080/users/details", {
           headers: { Authorization: `${token}` },
         });
 
@@ -61,7 +61,7 @@ export default function SelecaoCasas({ onCasaSelecionada }: { onCasaSelecionada:
       }
 
       await axios.put(
-        "https://floating-lowlands-90887-cc961db17145.herokuapp.com/selecionar/casa",
+        "http://localhost:8080/selecionar/casa",
         { casaId: selecionada },
         { headers: { Authorization: `${token}` } }
       );

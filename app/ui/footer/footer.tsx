@@ -39,7 +39,7 @@ export default function Footer() {
   
         setError(null); // Resetar erro antes da requisição
   
-        const response = await axios.get("https://floating-lowlands-90887-cc961db17145.herokuapp.com/users/details", {
+        const response = await axios.get("http://localhost:8080/users/details", {
           headers: { Authorization: `${token}` },
         });
   
@@ -57,7 +57,7 @@ export default function Footer() {
     setLoading(true);
     try {
       const token = localStorage.getItem("token") || "";
-      const response = await fetch("https://floating-lowlands-90887-cc961db17145.herokuapp.com/produtos", {
+      const response = await fetch("http://localhost:8080/produtos", {
         headers: {
           Authorization: token,
         },
@@ -114,7 +114,7 @@ export default function Footer() {
     try {
       const token = localStorage.getItem("token") || "";
       const response = await fetch(
-        `https://floating-lowlands-90887-cc961db17145.herokuapp.com/casas/${casaSelecionada}/despensa/produtos/${selectedProduto.id}`,
+        `http://localhost:8080/casas/${casaSelecionada}/despensa/produtos/${selectedProduto.id}`,
         {
           method: "POST",
           headers: {
@@ -143,7 +143,7 @@ export default function Footer() {
     try {
       const token = localStorage.getItem("token") || "";
       const response = await fetch(
-        `https://floating-lowlands-90887-cc961db17145.herokuapp.com/casas/${casaSelecionada}/lista-de-compras/produtos/${selectedProduto.id}?quantidade=${quantidade}`,
+        `http://localhost:8080/casas/${casaSelecionada}/lista-de-compras/produtos/${selectedProduto.id}?quantidade=${quantidade}`,
         {
           method: "POST",
           headers: {

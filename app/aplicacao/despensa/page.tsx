@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import axios from "axios";
-import HeaderDepensa from "@/app/ui/header/headerDespensa";
-import ItemDespensa from "@/app/ui/aplicacao/despensa/itemDespensa";
-import ItemAdicionar from "@/app/ui/botaoadicionar/itemAdicionar";
+import HeaderDepensa from "@/frontend-estoca-ai/app/ui/header/headerDespensa";
+import ItemDespensa from "@/frontend-estoca-ai/app/ui/aplicacao/despensa/itemDespensa";
+import ItemAdicionar from "@/frontend-estoca-ai/app/ui/botaoadicionar/itemAdicionar";
 
 interface Produto {
   Id: string;
@@ -39,7 +39,7 @@ export default function Page() {
           return;
         }
         setError(null);
-        const response = await axios.get("https://floating-lowlands-90887-cc961db17145.herokuapp.com/users/details", {
+        const response = await axios.get("http://localhost:8080/users/details", {
           headers: { Authorization: `${token}` },
         });
         if (!response.data.casaEscolhida) {
@@ -69,7 +69,7 @@ export default function Page() {
         return;
       }
       const despensaResponse = await axios.get(
-        `https://floating-lowlands-90887-cc961db17145.herokuapp.com/casas/${casaSelecionada}/despensa`,
+        `http://localhost:8080/casas/${casaSelecionada}/despensa`,
         { headers: { Authorization: `${token}` } }
       );
       const { produtosIds, produtosQuantidades } = despensaResponse.data;
@@ -79,22 +79,29 @@ export default function Page() {
         return;
       }
       const produtosResponse = await axios.get(
-        `https://floating-lowlands-90887-cc961db17145.herokuapp.com/casas/${casaSelecionada}/despensa/produtos`,
+        `http://localhost:8080/casas/${casaSelecionada}/despensa/produtos`,
         {
           headers: { Authorization: `${token}` },
           params: { ids: produtosIds.join(",") },
         }
       );
       const produtosDetalhes = produtosResponse.data;
-      const produtosFormatados = produtosDetalhes.map((produto: any, index: number) => ({
-        Id: produto._id || produtosIds[index],
-        Img: produto.imagemb64
-          ? `data:image/png;base64,${produto.imagemb64}`
-          : "/placeholder.png",
-        Nome: produto.nome || "Produto sem nome",
-        Qntd: produtosQuantidades[index] || 0,
-        CasaId: casaSelecionada,
-      }));
+      // Use the original order from produtosIds to merge details with their quantities with explicit types
+      const produtosFormatados = produtosIds.map((prodId: string, index: number) => {
+        // Find the matching product (assume _id or id matches prodId)
+        const produto = produtosDetalhes.find(
+          (p: any) => p._id === prodId || p.id === prodId
+        );
+        return {
+          Id: prodId,
+          Img: produto && produto.imagemb64
+            ? `data:image/png;base64,${produto.imagemb64}`
+            : "/placeholder.png",
+          Nome: (produto && produto.nome) || "Produto sem nome",
+          Qntd: produtosQuantidades[index] || 0,
+          CasaId: casaSelecionada,
+        };
+      });
       setItens(produtosFormatados);
     } catch (err) {
       console.error("Erro ao buscar itens da despensa:", err);
@@ -149,7 +156,7 @@ export default function Page() {
       </div>
 
       {/* Itens da Despensa */}
-      <ul className="mt-10 ml-8 mr-8">
+      <ul className="mt-10 ml-8 mr-8 mb-20">
         {error ? (
           <p className="text-red-500">{error}</p>
         ) : loading ? (

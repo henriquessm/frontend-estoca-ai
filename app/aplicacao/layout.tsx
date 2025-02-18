@@ -1,4 +1,4 @@
-import Footer from '@/app/ui/footer/footer';
+import Footer from '@/frontend-estoca-ai/app/ui/footer/footer';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (

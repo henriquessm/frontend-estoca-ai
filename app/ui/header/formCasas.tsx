@@ -23,7 +23,7 @@ export default function FormCasas() {
 
         try {
             const response = await axios.post(
-                'https://floating-lowlands-90887-cc961db17145.herokuapp.com/casas',
+                'http://localhost:8080/casas',
                 {
                     nome,
                     estado,

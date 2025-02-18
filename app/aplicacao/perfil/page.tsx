@@ -11,7 +11,7 @@ export default function Profile() {
 
   useEffect(() => {
     // Buscar dados do usuário na API
-    fetch("https://floating-lowlands-90887-cc961db17145.herokuapp.com/users/details", {
+    fetch("http://localhost:8080/users/details", {
       headers: { Authorization: `${localStorage.getItem("token")}` },
     })
       .then((res) => res.json())
@@ -28,7 +28,7 @@ export default function Profile() {
 
   const handleSaveChanges = () => {
     // Enviar alterações para API
-    fetch("https://floating-lowlands-90887-cc961db17145.herokuapp.com/users/details", {
+    fetch("http://localhost:8080/users/details", {
       method: "PUT",
       headers: {
         Authorization: `${localStorage.getItem("token")}`,

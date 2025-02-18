@@ -14,7 +14,7 @@ export default function Home() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      const response = await axios.post('https://floating-lowlands-90887-cc961db17145.herokuapp.com/login', { email, password });
+      const response = await axios.post('http://localhost:8080/login', { email, password });
       const [token, userId] = response.data.split(" ");
       localStorage.setItem('token', token);
       localStorage.setItem('userId', userId);

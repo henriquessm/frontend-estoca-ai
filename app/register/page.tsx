@@ -15,7 +15,7 @@ export default function Register() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      const response = await axios.post('https://floating-lowlands-90887-cc961db17145.herokuapp.com/register', {
+      const response = await axios.post('http://localhost:8080/register', {
         name,
         email,
         password,

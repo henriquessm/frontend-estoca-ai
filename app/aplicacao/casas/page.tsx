@@ -3,7 +3,7 @@
 import withAuth from '../../components/withAuth';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from "react";
-import HeaderCasas from "@/app/ui/header/headerCasas";
+import HeaderCasas from "@/frontend-estoca-ai/app/ui/header/headerCasas";
 import axios from "axios";
 
 interface Casa {
@@ -34,13 +34,13 @@ function Casas() {
                 }
 
                 // Buscar todas as casas
-                const casasResponse = await axios.get("https://floating-lowlands-90887-cc961db17145.herokuapp.com/casas", {
+                const casasResponse = await axios.get("http://localhost:8080/casas", {
                     headers: { Authorization: `${token}` }
                 });
                 setCasas(casasResponse.data);
 
                 // Buscar detalhes do usuário para obter a casa selecionada
-                const userResponse = await axios.get("https://floating-lowlands-90887-cc961db17145.herokuapp.com/users/details", {
+                const userResponse = await axios.get("http://localhost:8080/users/details", {
                     headers: { Authorization: `${token}` }
                 });
 
@@ -69,13 +69,13 @@ function Casas() {
 
             // Atualiza no backend
             await axios.put(
-                "https://floating-lowlands-90887-cc961db17145.herokuapp.com/selecionar/casa",
+                "http://localhost:8080/selecionar/casa",
                 { casaId: id },
                 { headers: { Authorization: `${token}` } }
             );
 
             // Buscar os detalhes atualizados do usuário para refletir no frontend
-            const userResponse = await axios.get("https://floating-lowlands-90887-cc961db17145.herokuapp.com/users/details", {
+            const userResponse = await axios.get("http://localhost:8080/users/details", {
                 headers: { Authorization: `${token}` }
             });
 

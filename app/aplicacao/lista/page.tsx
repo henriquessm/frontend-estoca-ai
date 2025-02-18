@@ -33,11 +33,11 @@ export default function Page() {
         return;
       }
       try {
-        const casasResponse = await axios.get("https://floating-lowlands-90887-cc961db17145.herokuapp.com/casas", {
+        const casasResponse = await axios.get("http://localhost:8080/casas", {
           headers: { Authorization: token },
         });
         setCasas(casasResponse.data);
-        const userResponse = await axios.get("https://floating-lowlands-90887-cc961db17145.herokuapp.com/users/details", {
+        const userResponse = await axios.get("http://localhost:8080/users/details", {
           headers: { Authorization: token },
         });
         if (userResponse.data.casaEscolhida) {
@@ -58,16 +58,18 @@ export default function Page() {
     const fetchListaProdutos = async () => {
       const token = localStorage.getItem("token");
       if (!token || !casaId) return;
+
+      // console.log("casaID" , casaId);
   
       try {
         const listaResponse = await axios.get(
-          `https://floating-lowlands-90887-cc961db17145.herokuapp.com/casas/${casaId}/lista-de-compras`,
+          `http://localhost:8080/casas/${casaId}/lista-de-compras`,
           { headers: { Authorization: token } }
         );
         const lista = listaResponse.data;
   
         const produtosResponse = await axios.get(
-          `https://floating-lowlands-90887-cc961db17145.herokuapp.com/casas/${casaId}/lista-de-compras/produtos`,
+          `http://localhost:8080/casas/${casaId}/lista-de-compras/produtos`,
           { headers: { Authorization: token } }
         );
   
@@ -102,7 +104,7 @@ export default function Page() {
     }
     try {
       await axios.put(
-        "https://floating-lowlands-90887-cc961db17145.herokuapp.com/selecionar/casa",
+        "http://localhost:8080/selecionar/casa",
         { casaId: novaCasa },
         { headers: { Authorization: token } }
       );
@@ -124,37 +126,34 @@ export default function Page() {
     if (!token || !casaId) return;
     const produtosSelecionados = produtos.filter((produto) => produto.checked);
     try {
-      await Promise.all(
-        produtosSelecionados.map((produto) =>
-          Promise.all([
-            axios.post(
-              `https://floating-lowlands-90887-cc961db17145.herokuapp.com/casas/${casaId}/despensa/produtos/${produto.id}`,
-              { quantidade: produto.quantidade },
-              { headers: { Authorization: token } }
-            ),
-            axios.delete(
-              `https://floating-lowlands-90887-cc961db17145.herokuapp.com/casas/${casaId}/lista-de-compras/produtos/${produto.id}?quantidade=${produto.quantidade}`,
-              { headers: { Authorization: token } }
-            )
-          ])
-        )
-      );
-      setProdutos((prev) =>
-        prev.filter((produto) => !produto.checked)
-      );
+      for (const produto of produtosSelecionados) {
+        await axios.post(
+          `http://localhost:8080/casas/${casaId}/despensa/produtos/${produto.id}`,
+          { quantidade: produto.quantidade },
+          { headers: { Authorization: token } }
+        );
+        await axios.delete(
+          `http://localhost:8080/casas/${casaId}/lista-de-compras/produtos/${produto.id}?quantidade=${produto.quantidade}`,
+          { headers: { Authorization: token } }
+        );
+      }
+      setProdutos((prev) => prev.filter((produto) => !produto.checked));
       setIsConfirmarPressed(false);
     } catch (error: any) {
-      console.error("Error processing compra to despensa:", error.response?.data || error.message);
+      console.error(
+        "Error processing compra to despensa:",
+        error.response?.data || error.message
+      );
     }
   };
-
+  
   const handleSaveQuantidade = async () => {
     if (selectedProduto !== null && tempQuantidade !== null) {
       const token = localStorage.getItem("token");
       if (!token || !casaId) return;
       try {
         await axios.put(
-          `https://floating-lowlands-90887-cc961db17145.herokuapp.com/casas/${casaId}/lista-de-compras/produtos/${selectedProduto.id}?quantidade=${tempQuantidade}`,
+          `http://localhost:8080/casas/${casaId}/lista-de-compras/produtos/${selectedProduto.id}?quantidade=${tempQuantidade}`,
           {},
           { headers: { Authorization: token } }
         );
@@ -183,7 +182,7 @@ export default function Page() {
     if (!token) return;
     try {
       await axios.delete(
-        `https://floating-lowlands-90887-cc961db17145.herokuapp.com/casas/${casaId}/lista-de-compras/produtos/${selectedProduto.id}?quantidade=${selectedProduto.quantidade}`,
+        `http://localhost:8080/casas/${casaId}/lista-de-compras/produtos/${selectedProduto.id}?quantidade=${selectedProduto.quantidade}`,
         { headers: { Authorization: token } }
       );
       setProdutos((prev) =>
@@ -221,7 +220,7 @@ export default function Page() {
       await Promise.all(
         produtosToDelete.map(produto =>
           axios.delete(
-            `https://floating-lowlands-90887-cc961db17145.herokuapp.com/casas/${casaId}/lista-de-compras/produtos/${produto.id}?quantidade=${produto.quantidade}`,
+            `http://localhost:8080/casas/${casaId}/lista-de-compras/produtos/${produto.id}?quantidade=${produto.quantidade}`,
             { headers: { Authorization: token } }
           )
         )

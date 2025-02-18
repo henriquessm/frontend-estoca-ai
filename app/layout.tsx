@@ -1,5 +1,5 @@
 import "./ui/globals.css";
-import { roboto } from '@/app/ui/fonts';
+import { roboto } from '@/frontend-estoca-ai/app/ui/fonts';
 
 export default function RootLayout({
   children,
